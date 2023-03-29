@@ -1,1 +1,1 @@
-"# Stockify" 
+# Stockify
