@@ -1,0 +1,25 @@
+.buttons{
+    -fx-background-color: white;
+        -fx-text-fill: black;
+        -fx-font-size: 16px;
+        -fx-cursor: hand;
+        -fx-font-family: "Verdana";
+}
+
+.buttons:hover{
+    -fx-background-color: #f0f1f3;
+
+}
+
+.logout{
+    -fx-background-color: white;
+    -fx-text-fill: black;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+        -fx-font-family: "Verdana";
+
+}
+
+.logout:hover{
+    -fx-background-color: #f0f1f3;
+}
