@@ -3,6 +3,10 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -10,21 +14,164 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Line?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" stylesheets="@styles/dashboard-style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stockify.stockify.DashboardController">
+<BorderPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="780.0" prefWidth="1400.0" stylesheets="@styles/dashboard-style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stockify.stockify.DashboardController">
    <center>
-      <AnchorPane fx:id="dash" prefHeight="200.0" prefWidth="200.0" style="-fx-background-color: #f0f1f3;" BorderPane.alignment="CENTER">
+      <AnchorPane fx:id="dash" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #f0f1f3;" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="inventoryPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: red;" />
-            <Pane fx:id="ordersPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: black;" visible="false" />
-            <Pane fx:id="suppliersPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: blue;" visible="false" />
-            <Pane fx:id="categoriesPane" prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: green;" visible="false" />
-         </children></AnchorPane>
+            <Pane fx:id="inventoryPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox layoutX="22.0" layoutY="22.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="185.0" prefWidth="1156.0" spacing="55.0">
+                     <children>
+                        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="550.0" styleClass="card" stylesheets="@styles/dashboard-style.css" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label layoutX="163.0" text="Inventory Summary">
+                                 <font>
+                                    <Font name="Verdana" size="22.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </Label>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="106.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/packages.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="88.0" layoutY="149.0" text="In Stock" textFill="#000000b2">
+                                 <font>
+                                    <Font name="Verdana" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="inStockLabel" alignment="CENTER" contentDisplay="CENTER" layoutX="119.0" layoutY="113.0" text="0" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Verdana" size="22.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="397.0" layoutY="64.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/pin.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="348.0" layoutY="146.0" text="To be Recieved" textFill="#000000b2">
+                                 <font>
+                                    <Font name="Verdana" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="toBeRecievedLabel" layoutX="410.0" layoutY="113.0" text="0">
+                                 <font>
+                                    <Font name="Verdana" size="22.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="31.4000244140625" endY="105.19998168945312" layoutX="243.0" layoutY="63.0" startX="31.4000244140625" startY="-6.800018310546875" stroke="#acacac" strokeWidth="2.0" />
+                           </children>
+                        </Pane>
+                        <Pane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="200.0" prefWidth="550.0" styleClass="card" stylesheets="@styles/dashboard-style.css" HBox.hgrow="ALWAYS">
+                           <children>
+                              <Label layoutX="174.0" text="Product Summary">
+                                 <font>
+                                    <Font name="Verdana" size="22.0" />
+                                 </font>
+                                 <padding>
+                                    <Insets top="10.0" />
+                                 </padding>
+                              </Label>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="111.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/user.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="64.0" layoutY="147.0" text="NO. Suppliers" textFill="#000000b2">
+                                 <font>
+                                    <Font name="Verdana" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="119.0" layoutY="114.0" text="0">
+                                 <font>
+                                    <Font name="Verdana" size="22.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="394.0" layoutY="65.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/list.png" />
+                                 </image>
+                              </ImageView>
+                              <Label layoutX="346.0" layoutY="147.0" text="NO. Categories" textFill="#000000b2">
+                                 <font>
+                                    <Font name="Verdana" size="18.0" />
+                                 </font>
+                              </Label>
+                              <Label layoutX="407.0" layoutY="114.0" text="0">
+                                 <font>
+                                    <Font name="Verdana" size="22.0" />
+                                 </font>
+                              </Label>
+                              <Line endX="31.4000244140625" endY="105.19998168945312" layoutX="243.0" layoutY="64.0" startX="31.4000244140625" startY="-6.800018310546875" stroke="#acacac" strokeWidth="2.0" />
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+                  <Pane layoutX="22.0" layoutY="231.0" prefHeight="538.0" prefWidth="1158.0" styleClass="card">
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="13.0" layoutY="70.0" style="-fx-background-color: white;">
+                           <content>
+                              <TableView fx:id="productsTable" editable="true" prefHeight="450.0" prefWidth="1130.0" styleClass="table">
+                                 <columns>
+                                    <TableColumn fx:id="productIdColumn" prefWidth="100.0" text="ID" />
+                                    <TableColumn fx:id="productNameColumn" prefWidth="210.0" text="Name" />
+                                    <TableColumn fx:id="productCategoryIdColumn" prefWidth="310.0" text="Categoy_ID" />
+                                    <TableColumn fx:id="productSupplierIdColumn" prefWidth="230.0" text="Supplier_ID" />
+                                    <TableColumn fx:id="productPriceColumn" prefWidth="150.0" text="Price" />
+                                    <TableColumn fx:id="productQuantityColumn" prefWidth="150.0" text="Quantity" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                        <Button layoutX="816.0" layoutY="14.0" mnemonicParsing="false" onAction="#addProductClicked" prefHeight="40.0" prefWidth="117.0" styleClass="add" text="Add Product" />
+                        <Label layoutX="14.0" layoutY="19.0" text="Products">
+                           <font>
+                              <Font name="Verdana" size="30.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="955.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteProductClicked" prefHeight="40.0" prefWidth="134.0" styleClass="delete" text="Delete Product" />
+                        <Button layoutX="1098.0" layoutY="14.0" mnemonicParsing="false" onAction="#refreshProductsTable" prefHeight="40.0" style="-fx-background-color: null;">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/refresh.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </Pane>
+               </children>
+            </Pane>
+            <Pane fx:id="ordersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="suppliersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="categoriesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+         </children>
+      </AnchorPane>
    </center>
    <left>
       <VBox fx:id="nav" prefWidth="200.0" spacing="30.0" style="-fx-background-color: white;">
          <children>
+            <ImageView fitHeight="56.0" fitWidth="60.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@images/logo.png" />
+               </image>
+               <VBox.margin>
+                  <Insets left="70.0" top="30.0" />
+               </VBox.margin>
+            </ImageView>
             <Button fx:id="inventoryButton" alignment="TOP_LEFT" graphicTextGap="15.0" mnemonicParsing="false" onAction="#inventoryClicked" prefHeight="48.0" prefWidth="200.0" styleClass="buttons" text="Inventory">
                <VBox.margin>
                   <Insets top="35.0" />
@@ -32,7 +179,7 @@
                <graphic>
                   <ImageView fitHeight="36.0" fitWidth="36.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@images/inventory.png" />
+                        <Image url="@images/Inventory.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -40,7 +187,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
                <padding>
-                  <Insets left="15.0" top="10.0" />
+                  <Insets left="20.0" top="10.0" />
                </padding>
                <font>
                   <Font name="Verdana" size="12.0" />
@@ -61,7 +208,7 @@
                   <Insets />
                </VBox.margin>
                <padding>
-                  <Insets left="15.0" top="10.0" />
+                  <Insets left="20.0" top="10.0" />
                </padding>
                <font>
                   <Font name="Verdana" size="12.0" />
@@ -82,7 +229,7 @@
                   <Insets />
                </VBox.margin>
                <padding>
-                  <Insets left="15.0" top="10.0" />
+                  <Insets left="20.0" top="10.0" />
                </padding>
                <font>
                   <Font name="Verdana" size="12.0" />
@@ -103,14 +250,14 @@
                   <Insets />
                </VBox.margin>
                <padding>
-                  <Insets left="15.0" top="10.0" />
+                  <Insets left="20.0" top="10.0" />
                </padding>
                <font>
                   <Font name="Verdana" size="12.0" />
                </font>
             </Button>
             <Pane prefHeight="110.0" prefWidth="200.0" style="-fx-background-color: white;" />
-            <Button graphicTextGap="10.0" mnemonicParsing="false" prefHeight="48.0" prefWidth="200.0" styleClass="logout" text="Logout">
+            <Button graphicTextGap="10.0" mnemonicParsing="false" onAction="#logoutClicked" prefHeight="48.0" prefWidth="200.0" styleClass="logout" text="Logout">
                <graphic>
                   <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
                      <image>
@@ -125,18 +272,4 @@
          </children>
       </VBox>
    </left>
-   <top>
-      <HBox alignment="CENTER_LEFT" maxHeight="-Infinity" minHeight="-Infinity" prefHeight="100.0" style="-fx-background-color: white;" BorderPane.alignment="CENTER">
-         <children>
-            <ImageView fitHeight="100.0" fitWidth="180.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@images/top.png" />
-               </image>
-               <HBox.margin>
-                  <Insets bottom="10.0" left="10.0" top="10.0" />
-               </HBox.margin>
-            </ImageView>
-         </children>
-      </HBox>
-   </top>
 </BorderPane>

@@ -9,14 +9,13 @@
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.text.Font?>
 
-
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@styles/login-style.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stockify.stockify.LoginController">
    <children>
-      <Pane prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: white;">
+      <Pane prefHeight="600.0" prefWidth="400.0" style="-fx-background-color: white;" styleClass="border" stylesheets="@styles/login-style.css">
          <children>
-            <ImageView fitHeight="268.0" fitWidth="323.0" layoutX="39.0" layoutY="208.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fitHeight="392.0" fitWidth="400.0" layoutY="105.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@images/login.png" />
+                  <Image url="@images/139517-ecommerce-order-fulfillment-automation.gif" />
                </image>
             </ImageView>
          </children>

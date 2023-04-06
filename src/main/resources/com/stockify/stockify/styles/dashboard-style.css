@@ -23,3 +23,40 @@
 .logout:hover{
     -fx-background-color: #f0f1f3;
 }
+
+.card{
+    -fx-background-color: white;
+    -fx-background-radius: 15px;
+    -fx-padding: 10px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.2), 15, 0, 0, 0);
+}
+
+.table{
+    -fx-font-size: 16px;
+    -fx-font-family: "Verdana";
+}
+
+.add{
+    -fx-background-color: #1570EF;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-font-family: "Verdana";
+    -fx-border-radius: 10px;
+}
+.add:hover{
+    -fx-background-color: #0d4db5;
+}
+
+.delete{
+    -fx-background-color: #F36960;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-cursor: hand;
+    -fx-font-family: "Verdana";
+    -fx-border-radius: 10px;
+}
+
+.delete:hover{
+    -fx-background-color: #b50d0d;
+}

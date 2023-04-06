@@ -8,8 +8,7 @@
     -fx-border-width: 2px;
     -fx-padding: 10px;
     -fx-cursor: hand;
-        -fx-font-family: "Verdana";
-
+    -fx-font-family: "Verdana";
 }
 
 .button:hover{
@@ -32,3 +31,8 @@
     -fx-border-width: 1px;
 }
 
+.border{
+    -fx-border-style: hidden solid none hidden;
+    -fx-border-color: #fbcc64;
+    -fx-border-width: 8px;
+}
