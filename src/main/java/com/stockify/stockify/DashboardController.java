@@ -1,4 +1,5 @@
 package com.stockify.stockify;
+import com.stockify.stockify.models.Order;
 import com.stockify.stockify.models.Processes;
 import com.stockify.stockify.models.Product;
 import javafx.collections.FXCollections;
@@ -14,6 +15,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.ComboBoxTableCell;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.control.cell.TextFieldTableCell;
 import javafx.scene.image.Image;
@@ -28,6 +30,9 @@ import javafx.util.converter.IntegerStringConverter;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class DashboardController implements Initializable {
@@ -36,8 +41,25 @@ public class DashboardController implements Initializable {
     @FXML
     private Label toBeRecievedLabel;
     @FXML
+    private Label NOCategoriesLabel;
+    @FXML
+    private Label NOSuppliersLabel;
+    @FXML
+    private Label NOOrdersLabel;
+    @FXML
+    private Label NOReceivedLabel;
+    @FXML
+    private Label NOReturnedLabel;
+    @FXML
+    private Label NOOnTheWayLabel;
+    @FXML
+    private Label totalCostLabel;
+    @FXML
     private TableView productsTable;
 
+
+    @FXML
+    private TableView ordersTable;
     @FXML
     private TableColumn<Product, Integer> productIdColumn = new TableColumn<>("ID");
 
@@ -56,6 +78,24 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<Product, Integer> productQuantityColumn = new TableColumn<>("Quantity");
 
+
+    @FXML
+    private TableColumn<Order, Integer> orderIdColumn = new TableColumn<>("ID");
+
+    @FXML
+    private TableColumn<Order, Date> orderDateColumn = new TableColumn<>("Order_Date");
+
+    @FXML
+    private TableColumn<Order, Date> deliveryDateColumn = new TableColumn<>("Delivery_Date");
+
+    @FXML
+    private TableColumn<Order, String> orderStatusColumn = new TableColumn<>("Status");
+
+    @FXML
+    private TableColumn<Order, Integer> orderProductIdColumn = new TableColumn<>("Product_ID");
+
+    @FXML
+    private TableColumn<Order, Integer> orderQuantityColumn = new TableColumn<>("Quantity");
 
     @FXML
     private Pane categoriesPane;
@@ -81,8 +121,7 @@ public class DashboardController implements Initializable {
         ObservableList<Product> products = FXCollections.observableArrayList();
         products.addAll(Processes.getAllProducts());
         productsTable.setItems(products);
-        inStockLabel.setText(String.valueOf(Processes.getInStock()));
-        toBeRecievedLabel.setText(String.valueOf(Processes.getToBeReceived()));
+        setLabels();
     }
 
     @FXML
@@ -126,6 +165,7 @@ public class DashboardController implements Initializable {
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
         refreshProductsTable();
+        setLabels();
     }
     @FXML
     void deleteProductClicked(ActionEvent event) {
@@ -139,6 +179,7 @@ public class DashboardController implements Initializable {
             Processes.deleteProduct(id);
             productsTable.getItems().removeAll(productsTable.getSelectionModel().getSelectedItem());
             Snackbar.show("Product deleted successfully",true);
+            setLabels();
         } catch (Exception e) {
             Snackbar.show("Error deleting product",false);
             e.printStackTrace();
@@ -233,16 +274,168 @@ public class DashboardController implements Initializable {
         productsTable.setItems(data);
     }
 
+    private void setOrdersTable(){
+        orderIdColumn.setCellValueFactory(new PropertyValueFactory<>("orderId"));
+        orderProductIdColumn.setCellValueFactory(new PropertyValueFactory<>("productId"));
+        orderProductIdColumn.setOnEditCommit((TableColumn.CellEditEvent<Order, Integer> event) -> {
+            Order order = event.getRowValue();
+            Integer newValue = event.getNewValue();
+            if (newValue == null || newValue <= 0) {
+                Snackbar.show("Product ID cannot be negative or empty!", false);
+                return;
+            }
+            order.setProductId(event.getNewValue());
+            boolean isDone = Processes.updateOrder(order);
+            if(isDone){
+                Snackbar.show("Product ID updated successfully!", true);
+            } else {
+                Snackbar.show("Product ID update failed!", false);
+            }
+        });
+        orderQuantityColumn.setCellValueFactory(new PropertyValueFactory<>("quantity"));
+        orderQuantityColumn.setOnEditCommit((TableColumn.CellEditEvent<Order, Integer> event) -> {
+            Order order = event.getRowValue();
+            Integer newValue = event.getNewValue();
+            if (newValue == null || newValue <= 0) {
+                Snackbar.show("Quantity cannot be negative or empty!", false);
+                return;
+            }
+            order.setQuantity(event.getNewValue());
+            boolean isDone = Processes.updateOrder(order);
+            if(isDone){
+                Snackbar.show("Quantity updated successfully!", true);
+            } else {
+                Snackbar.show("Quantity update failed!", false);
+            }
+        });
+        orderDateColumn.setCellValueFactory(new PropertyValueFactory<>("orderDate"));
+        orderDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Order, Date> event) -> {
+            Order order = event.getRowValue();
+            String newValue = String.valueOf(event.getNewValue());
+            if (newValue == null || newValue.trim().isEmpty()) {
+                Snackbar.show("Order date cannot be empty!", false);
+                return;
+            }
+            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date date = format.parse(newValue);
+                order.setOrderDate(date);
+            } catch (ParseException e) {
+                Snackbar.show("Invalid date format!", false);
+                return;
+            }
+            boolean isDone = Processes.updateOrder(order);
+            if(isDone){
+                Snackbar.show("Order date updated successfully!", true);
+            } else {
+                Snackbar.show("Order date update failed!", false);
+            }
+        });
+        deliveryDateColumn.setCellValueFactory(new PropertyValueFactory<>("deliveryDate"));
+        deliveryDateColumn.setOnEditCommit((TableColumn.CellEditEvent<Order, Date> event) -> {
+            Order order = event.getRowValue();
+            String newValue = String.valueOf(event.getNewValue());
+            if (newValue == null || newValue.trim().isEmpty()) {
+                Snackbar.show("Delivery date cannot be empty!", false);
+                return;
+            }
+            SimpleDateFormat format = new SimpleDateFormat("dd-MM-yyyy");
+            try {
+                Date date = format.parse(newValue);
+                order.setDeliveryDate(date);
+            } catch (ParseException e) {
+                Snackbar.show("Invalid date format!", false);
+                return;
+            }
+            boolean isDone = Processes.updateOrder(order);
+            if(isDone){
+                Snackbar.show("Delivery date updated successfully!", true);
+            } else {
+                Snackbar.show("Delivery date update failed!", false);
+            }
+        });
+        orderStatusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
+        orderStatusColumn.setCellFactory(ComboBoxTableCell.forTableColumn("Pending", "Processing","Shipped","Cancelled", "Returned"));
+        orderStatusColumn.setOnEditCommit((TableColumn.CellEditEvent<Order, String> event) -> {
+            Order order = event.getRowValue();
+            String newValue = event.getNewValue();
+            if (newValue == null || newValue.trim().isEmpty()) {
+                Snackbar.show("Status cannot be empty!", false);
+                return;
+            }
+            order.setStatus(event.getNewValue());
+            boolean isDone = Processes.updateOrder(order);
+            if(isDone){
+                Snackbar.show("Status updated successfully!", true);
+            } else {
+                Snackbar.show("Status update failed!", false);
+            }
+        });
+        Order[] orders = Processes.getAllOrders();
+        ObservableList<Order> data = FXCollections.observableArrayList(orders);
+        ordersTable.setItems(data);
+    }
+
+    @FXML
+    void addOrderClicked() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("add-order-view.fxml"));
+        Stage stage = new Stage();
+        stage.setTitle("Stockify");
+        stage.setScene(new Scene(root, 570, 370));
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Login.class.getResourceAsStream("images/logo.png")));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+        refreshOrdersTable();
+        setLabels();
+    }
+
+    @FXML
+    void deleteOrderClicked(){
+        Order order = (Order) ordersTable.getSelectionModel().getSelectedItem();
+        if(order == null){
+            Snackbar.show("Please select an order to delete!", false);
+            return;
+        }
+        boolean isDone = Processes.deleteOrder(order);
+        if(isDone){
+            Snackbar.show("Order deleted successfully!", true);
+            setLabels();
+        } else {
+            Snackbar.show("Order deletion failed!", false);
+        }
+        setOrdersTable();
+        setLabels();
+    }
+
+    @FXML
+    void refreshOrdersTable(){
+        ObservableList<Order> orders = FXCollections.observableArrayList();
+        orders.addAll(Processes.getAllOrders());
+        ordersTable.setItems(orders);
+        setLabels();
+    }
+
     private void setLabels(){
         inStockLabel.setText(String.valueOf(Processes.getInStock()));
         toBeRecievedLabel.setText(String.valueOf(Processes.getToBeReceived()));
+        NOSuppliersLabel.setText(String.valueOf(Processes.getNumberOfSuppliers()));
+        NOCategoriesLabel.setText(String.valueOf(Processes.getNumberOfCategories()));
+        NOOrdersLabel.setText(String.valueOf(Processes.getNumberOfOrders()));
+        NOReceivedLabel.setText(String.valueOf(Processes.getNumberOfOrdersByStatus("Received")));
+        NOOnTheWayLabel.setText(String.valueOf(Processes.getNumberOfOrdersByStatus("Shipped")));
+        NOReturnedLabel.setText(String.valueOf(Processes.getNumberOfOrdersByStatus("Returned")));
+        totalCostLabel.setText(String.valueOf(Processes.getTotalCost()));
     }
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setCurrentButton((Button) nav.getChildren().get(1));
         lastClickedButton = (Button) nav.getChildren().get(1);
         setProductsTable();
+        setOrdersTable();
         setLabels();
     }
 }

@@ -2,10 +2,7 @@ package com.stockify.stockify.models;
 
 import com.stockify.stockify.Snackbar;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 public class Processes {
     static Connection conn = DB.connectDB();
@@ -64,6 +61,36 @@ public class Processes {
         }
     }
 
+    public static int getNumberOfSuppliers(){
+        String query = "SELECT COUNT(*) FROM suppliers";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int getNumberOfCategories(){
+        String query = "SELECT COUNT(*) FROM categories";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public static boolean updateProduct(Product product) {
         String query = "UPDATE products SET product_name = ?, category_id = ?, supplier_id = ?, unit_price = ?, quantity_in_stock = ? WHERE product_id = ?";
         try {
@@ -106,5 +133,120 @@ public class Processes {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    public static Order[] getAllOrders() {
+        String query = "SELECT * FROM orders";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            int count = 0;
+            while (rs.next()) {
+                count++;
+            }
+            Order[] orders = new Order[count];
+            rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                orders[i] = new Order(rs.getInt("order_id"),rs.getDate("order_date") ,rs.getDate("delivery_date"),rs.getString("status"), rs.getInt("product_id"), rs.getInt("quantity"));
+                i++;
+            }
+            return orders;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean updateOrder(Order order) {
+        String query = "UPDATE orders SET order_date = ?, delivery_date = ?, status = ?, product_id = ?, quantity = ? WHERE order_id = ?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setDate(1, (Date) order.getOrderDate());
+            pst.setDate(2, (Date) order.getDeliveryDate());
+            pst.setString(3, order.getStatus());
+            pst.setInt(4, order.getProductId());
+            pst.setInt(5, order.getQuantity());
+            pst.setInt(6, order.getOrderId());
+            int res = pst.executeUpdate();
+            return res > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean deleteOrder(Order order) {
+        String query = "DELETE FROM orders WHERE order_id = ?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setInt(1, order.getOrderId());
+            int res = pst.executeUpdate();
+            return res > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void addOrder(Order newOrder) {
+        String query = "INSERT INTO orders (order_date, delivery_date, status, product_id, quantity) VALUES (?, ?, ?, ?, ?)";
+        java.sql.Date sqlOrderDate = new java.sql.Date(newOrder.getOrderDate().getTime());
+        java.sql.Date sqlDeliveryDate = new java.sql.Date(newOrder.getDeliveryDate().getTime());
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setDate(1, sqlOrderDate);
+            pst.setDate(2, sqlDeliveryDate);
+            pst.setString(3, newOrder.getStatus());
+            pst.setInt(4, newOrder.getProductId());
+            pst.setInt(5, newOrder.getQuantity());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int getNumberOfOrders(){
+        String query = "SELECT COUNT(*) FROM orders";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static int getNumberOfOrdersByStatus(String status){
+        String query = "SELECT COUNT(*) FROM orders WHERE status = ?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, status);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1);
+            }
+            return 0;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static double getTotalCost(){
+        double totalCost = 0.0;
+        String query = "Select SUM(unit_price * quantity) FROM products, orders WHERE products.product_id = orders.product_id";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                totalCost = rs.getDouble(1);
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return totalCost;
     }
 }

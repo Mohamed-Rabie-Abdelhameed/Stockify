@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="370.0" prefWidth="570.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.stockify.stockify.AddOrderController">
+   <children>
+      <Pane layoutX="170.0" layoutY="24.0" prefHeight="394.0" prefWidth="740.0" style="-fx-background-color: white;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox layoutX="14.0" layoutY="71.0" prefHeight="207.0" prefWidth="146.0" spacing="22.0">
+               <children>
+                  <Label text="Order Date">
+                     <font>
+                        <Font name="Verdana" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Quantity">
+                     <font>
+                        <Font name="Verdana" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Delivery Date">
+                     <font>
+                        <Font name="Verdana" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Product ID">
+                     <font>
+                        <Font name="Verdana" size="18.0" />
+                     </font>
+                  </Label>
+                  <Label text="Status">
+                     <font>
+                        <Font name="Verdana" size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Label layoutX="14.0" layoutY="14.0" text="Add Order">
+               <font>
+                  <Font name="Verdana" size="24.0" />
+               </font>
+            </Label>
+            <VBox layoutX="160.0" layoutY="71.0" prefHeight="202.0" prefWidth="389.0" spacing="7.0">
+               <children>
+                  <TextField fx:id="orderDate" promptText="25-3-2023" styleClass="text-field" stylesheets="@styles/login-style.css" />
+                  <TextField fx:id="quantity" promptText="quantity ordered" styleClass="text-field" stylesheets="@styles/login-style.css" />
+                  <TextField fx:id="deliveryDate" promptText="25-4-2023" styleClass="text-field" stylesheets="@styles/login-style.css" />
+                  <TextField fx:id="productId" promptText="product id" styleClass="text-field" stylesheets="@styles/login-style.css" />
+                  <TextField fx:id="status" promptText="order status" styleClass="text-field" stylesheets="@styles/login-style.css" />
+               </children>
+            </VBox>
+            <Button layoutX="349.0" layoutY="303.0" mnemonicParsing="false" onAction="#onConfirmClicked" prefHeight="40.0" prefWidth="200.0" styleClass="add" stylesheets="@styles/dashboard-style.css" text="Confirm">
+               <font>
+                  <Font name="Verdana" size="18.0" />
+               </font>
+            </Button>
+            <Button layoutX="160.0" layoutY="303.0" mnemonicParsing="false" onAction="#onCancelClicked" prefHeight="40.0" prefWidth="150.0" styleClass="delete" stylesheets="@styles/dashboard-style.css" text="Cancel" />
+         </children>
+      </Pane>
+   </children>
+</AnchorPane>

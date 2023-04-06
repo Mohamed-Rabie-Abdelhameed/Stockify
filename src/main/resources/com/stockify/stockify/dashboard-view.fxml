@@ -21,7 +21,7 @@
    <center>
       <AnchorPane fx:id="dash" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #f0f1f3;" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="inventoryPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Pane fx:id="inventoryPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox layoutX="22.0" layoutY="22.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="185.0" prefWidth="1156.0" spacing="55.0">
                      <children>
@@ -88,7 +88,7 @@
                                     <Font name="Verdana" size="18.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="119.0" layoutY="114.0" text="0">
+                              <Label fx:id="NOSuppliersLabel" layoutX="119.0" layoutY="114.0" text="0">
                                  <font>
                                     <Font name="Verdana" size="22.0" />
                                  </font>
@@ -103,7 +103,7 @@
                                     <Font name="Verdana" size="18.0" />
                                  </font>
                               </Label>
-                              <Label layoutX="407.0" layoutY="114.0" text="0">
+                              <Label fx:id="NOCategoriesLabel" layoutX="407.0" layoutY="114.0" text="0">
                                  <font>
                                     <Font name="Verdana" size="22.0" />
                                  </font>
@@ -155,7 +155,148 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="ordersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="ordersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <HBox layoutX="16.0" layoutY="14.0" prefHeight="180.0" prefWidth="1164.0" spacing="50.0" styleClass="card">
+                     <children>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="24.0" layoutY="7.0" text="Total Orders" textFill="#1570ef">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="NOOrdersLabel" layoutX="91.0" layoutY="108.0" text="0">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="80.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/exam.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="11.0" layoutY="8.0" text="Total Received" textFill="#845ebc">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="NOReceivedLabel" layoutX="92.0" layoutY="107.0" text="0">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="80.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/clipboard.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="9.0" layoutY="7.0" text="Total Returned" textFill="#f36960">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="NOReturnedLabel" layoutX="91.0" layoutY="108.0" text="0">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="80.0" layoutY="54.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/parcel.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="24.0" layoutY="7.0" text="On The Way" textFill="#ffaf56">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="NOOnTheWayLabel" layoutX="91.0" layoutY="108.0" text="0">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="45.0" fitWidth="45.0" layoutX="75.0" layoutY="57.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/tracking.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                        <Pane prefHeight="200.0" prefWidth="200.0">
+                           <children>
+                              <Label layoutX="38.0" layoutY="6.0" text="Total Cost" textFill="#41c588">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <Label fx:id="totalCostLabel" layoutX="87.0" layoutY="108.0" text="0" textAlignment="CENTER">
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="80.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/banknotes.png" />
+                                 </image>
+                              </ImageView>
+                           </children>
+                        </Pane>
+                     </children>
+                  </HBox>
+                  <Pane layoutX="20.0" layoutY="215.0" prefHeight="550.0" prefWidth="1158.0" styleClass="card">
+                     <children>
+                        <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="13.0" layoutY="70.0" style="-fx-background-color: white;">
+                           <content>
+                              <TableView fx:id="ordersTable" editable="true" prefHeight="470.0" prefWidth="1130.0" styleClass="table">
+                                 <columns>
+                                    <TableColumn fx:id="orderIdColumn" prefWidth="140.0" text="ID" />
+                                    <TableColumn fx:id="orderDateColumn" prefWidth="220.0" text="Order_Date" />
+                                    <TableColumn fx:id="deliveryDateColumn" prefWidth="220.0" text="Delivery_Date" />
+                                    <TableColumn fx:id="orderStatusColumn" prefWidth="220.0" text="Status" />
+                                    <TableColumn fx:id="orderProductIdColumn" prefWidth="140.0" text="Product_ID" />
+                                    <TableColumn fx:id="orderQuantityColumn" prefWidth="190.0" text="Quantity" />
+                                 </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                        <Button layoutX="816.0" layoutY="14.0" mnemonicParsing="false" onAction="#addOrderClicked" prefHeight="40.0" prefWidth="117.0" styleClass="add" text="Add Order" />
+                        <Label layoutX="14.0" layoutY="19.0" text="Orders">
+                           <font>
+                              <Font name="Verdana" size="30.0" />
+                           </font>
+                        </Label>
+                        <Button layoutX="955.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteOrderClicked" prefHeight="40.0" prefWidth="134.0" styleClass="delete" text="Delete Order" />
+                        <Button layoutX="1098.0" layoutY="14.0" mnemonicParsing="false" onAction="#refreshOrdersTable" prefHeight="40.0" style="-fx-background-color: null;">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/refresh.png" />
+                                 </image>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </ImageView>
+                           </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
+                        </Button>
+                     </children>
+                  </Pane>
+               </children></Pane>
             <Pane fx:id="suppliersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
             <Pane fx:id="categoriesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
          </children>
