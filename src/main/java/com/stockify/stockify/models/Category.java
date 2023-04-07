@@ -1,20 +1,20 @@
 package com.stockify.stockify.models;
 
 public class Category {
-    private int categoryId;
+    private int Id;
     private String name;
 
     public Category(int categoryId, String name) {
-        this.categoryId = categoryId;
+        this.Id = categoryId;
         this.name = name;
     }
 
-    public int getCategoryId() {
-        return categoryId;
+    public int getId() {
+        return Id;
     }
 
-    public void setCategoryId(int categoryId) {
-        this.categoryId = categoryId;
+    public void setId(int id) {
+        this.Id = id;
     }
 
     public String getName() {

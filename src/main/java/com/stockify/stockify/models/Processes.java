@@ -249,4 +249,116 @@ public class Processes {
         }
         return totalCost;
     }
+
+    public static Supplier[] getAllSuppliers() {
+        String query = "SELECT * FROM suppliers";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            int count = 0;
+            while (rs.next()) {
+                count++;
+            }
+            Supplier[] suppliers = new Supplier[count];
+            rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                suppliers[i] = new Supplier(rs.getInt("supplier_id"), rs.getString("name"), rs.getString("address"), rs.getString("phone"), rs.getString("email"));
+                i++;
+            }
+            return suppliers;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean updateSupplier(Supplier supplier) {
+        String query = "UPDATE suppliers SET name = ?, address = ?, phone = ?, email = ? WHERE supplier_id = ?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, supplier.getName());
+            pst.setString(2, supplier.getAddress());
+            pst.setString(3, supplier.getPhone());
+            pst.setString(4, supplier.getEmail());
+            pst.setInt(5, supplier.getId());
+            int res = pst.executeUpdate();
+            return res > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void addSupplier(Supplier newSupplier) {
+        String query = "INSERT INTO suppliers (name, address, phone, email) VALUES (?, ?, ?, ?)";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, newSupplier.getName());
+            pst.setString(2, newSupplier.getAddress());
+            pst.setString(3, newSupplier.getPhone());
+            pst.setString(4, newSupplier.getEmail());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean deleteSupplier(Supplier supplier) {
+        String query = "DELETE FROM suppliers WHERE supplier_id = ?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setInt(1, supplier.getId());
+            int res = pst.executeUpdate();
+            return res > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean updateCategory(Category category) {
+        String query = "UPDATE categories SET name = ? WHERE category_id = ?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, category.getName());
+            pst.setInt(2, category.getId());
+            int res = pst.executeUpdate();
+            return res > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static Category[] getAllCategories() {
+        String query = "SELECT * FROM categories";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            int count = 0;
+            while (rs.next()) {
+                count++;
+            }
+            Category[] categories = new Category[count];
+            rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                categories[i] = new Category(rs.getInt("category_id"), rs.getString("name"));
+                i++;
+            }
+            return categories;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static void addCategory(Category newCategory) {
+        String query = "INSERT INTO categories (name) VALUES (?)";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setString(1, newCategory.getName());
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 }

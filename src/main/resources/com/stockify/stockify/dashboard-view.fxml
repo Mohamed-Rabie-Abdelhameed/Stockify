@@ -2,6 +2,9 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
@@ -129,13 +132,19 @@
                               </TableView>
                            </content>
                         </ScrollPane>
-                        <Button layoutX="816.0" layoutY="14.0" mnemonicParsing="false" onAction="#addProductClicked" prefHeight="40.0" prefWidth="117.0" styleClass="add" text="Add Product" />
+                        <Button layoutX="816.0" layoutY="14.0" mnemonicParsing="false" onAction="#addProductClicked" prefHeight="40.0" prefWidth="117.0" styleClass="add" text="Add Product">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></Button>
                         <Label layoutX="14.0" layoutY="19.0" text="Products">
                            <font>
                               <Font name="Verdana" size="30.0" />
                            </font>
                         </Label>
-                        <Button layoutX="955.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteProductClicked" prefHeight="40.0" prefWidth="134.0" styleClass="delete" text="Delete Product" />
+                        <Button layoutX="955.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteProductClicked" prefHeight="40.0" prefWidth="134.0" styleClass="delete" text="Delete Product">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></Button>
                         <Button layoutX="1098.0" layoutY="14.0" mnemonicParsing="false" onAction="#refreshProductsTable" prefHeight="40.0" style="-fx-background-color: null;">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -155,7 +164,7 @@
                   </Pane>
                </children>
             </Pane>
-            <Pane fx:id="ordersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Pane fx:id="ordersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox layoutX="16.0" layoutY="14.0" prefHeight="180.0" prefWidth="1164.0" spacing="50.0" styleClass="card">
                      <children>
@@ -272,13 +281,19 @@
                               </TableView>
                            </content>
                         </ScrollPane>
-                        <Button layoutX="816.0" layoutY="14.0" mnemonicParsing="false" onAction="#addOrderClicked" prefHeight="40.0" prefWidth="117.0" styleClass="add" text="Add Order" />
+                        <Button layoutX="816.0" layoutY="14.0" mnemonicParsing="false" onAction="#addOrderClicked" prefHeight="40.0" prefWidth="117.0" styleClass="add" text="Add Order">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></Button>
                         <Label layoutX="14.0" layoutY="19.0" text="Orders">
                            <font>
                               <Font name="Verdana" size="30.0" />
                            </font>
                         </Label>
-                        <Button layoutX="955.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteOrderClicked" prefHeight="40.0" prefWidth="134.0" styleClass="delete" text="Delete Order" />
+                        <Button layoutX="955.0" layoutY="14.0" mnemonicParsing="false" onAction="#deleteOrderClicked" prefHeight="40.0" prefWidth="134.0" styleClass="delete" text="Delete Order">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></Button>
                         <Button layoutX="1098.0" layoutY="14.0" mnemonicParsing="false" onAction="#refreshOrdersTable" prefHeight="40.0" style="-fx-background-color: null;">
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
@@ -297,8 +312,143 @@
                      </children>
                   </Pane>
                </children></Pane>
-            <Pane fx:id="suppliersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
-            <Pane fx:id="categoriesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0" />
+            <Pane fx:id="suppliersPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <Pane layoutX="24.0" layoutY="20.0" prefHeight="740.0" prefWidth="1150.0" styleClass="card">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" layoutX="14.0" layoutY="14.0" prefHeight="80.0" prefWidth="1120.0" spacing="20.0">
+                           <children>
+                              <Label text="Suppliers">
+                                 <HBox.margin>
+                                    <Insets left="10.0" />
+                                 </HBox.margin>
+                                 <font>
+                                    <Font name="Verdana" size="24.0" />
+                                 </font></Label>
+                              <Pane prefHeight="80.0" prefWidth="500.0" />
+                              <Button mnemonicParsing="false" onAction="#addSupplierClicked" prefHeight="50.0" prefWidth="180.0" styleClass="add" text="Add Supplier">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#deleteSupplierClicked" prefHeight="50.0" prefWidth="180.0" styleClass="delete" text="Delete Supplier">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                              <Button mnemonicParsing="false" onAction="#refreshSuppliersTable" style="-fx-background-color: null;">
+                                 <graphic>
+                                    <ImageView fitHeight="35.0" fitWidth="35.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@images/refresh.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                                 <cursor>
+                                    <Cursor fx:constant="HAND" />
+                                 </cursor>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <Line endX="1020.0" endY="7.62939453125E-6" layoutX="115.0" layoutY="94.0" startX="-100.0" stroke="#848484" />
+                        <ScrollPane layoutX="14.0" layoutY="106.0">
+                           <content>
+                              <TableView fx:id="suppliersTable" prefHeight="624.0" prefWidth="1124.0">
+                                <columns>
+                                  <TableColumn fx:id="supplierIdColumn" prefWidth="150.0" text="ID" />
+                                  <TableColumn fx:id="supplierNameColumn" prefWidth="242.0" text="Name" />
+                                    <TableColumn fx:id="supplierAddressColumn" prefWidth="242.0" text="Address" />
+                                    <TableColumn fx:id="supplierPhoneColumn" prefWidth="242.0" text="Phone" />
+                                    <TableColumn fx:id="supplierEmailColumn" prefWidth="242.0" text="Email" />
+                                </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                     </children>
+                  </Pane>
+               </children></Pane>
+            <Pane fx:id="categoriesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <children>
+                  <BarChart fx:id="categoriesChart" layoutX="14.0" layoutY="14.0" prefHeight="400.0" prefWidth="580.0" styleClass="card" title="Categories">
+                    <xAxis>
+                      <CategoryAxis label="Category" side="BOTTOM" />
+                    </xAxis>
+                    <yAxis>
+                      <NumberAxis label="Count" side="LEFT" />
+                    </yAxis>
+                  </BarChart>
+                  <Pane layoutX="621.0" layoutY="14.0" prefHeight="400.0" prefWidth="565.0" styleClass="card">
+                     <children>
+                        <Label layoutX="14.0" layoutY="14.0" text="Low in Stock" textFill="#f36960">
+                           <font>
+                              <Font name="Verdana" size="24.0" />
+                           </font>
+                           <padding>
+                              <Insets top="10.0" />
+                           </padding>
+                        </Label>
+                        <TableView fx:id="lowInStockTable" layoutX="12.0" layoutY="76.0" prefHeight="300.0" prefWidth="540.0">
+                          <columns>
+                            <TableColumn fx:id="lowCategoryNameColumn" prefWidth="270.0" text="Category" />
+                            <TableColumn fx:id="lowCategoryQuantityColumn" prefWidth="270.0" text="Quantity" />
+                          </columns>
+                        </TableView>
+                     </children></Pane>
+                  <ScrollPane layoutX="14.0" layoutY="446.0">
+                     <content>
+                        <TableView fx:id="categoriesTable" prefHeight="315.0" prefWidth="580.0">
+                          <columns>
+                            <TableColumn fx:id="categoryIdColumn" prefWidth="290.0" text="ID" />
+                            <TableColumn fx:id="categoryNameColumn" prefWidth="290.0" text="Category_Name" />
+                          </columns>
+                        </TableView>
+                     </content>
+                  </ScrollPane>
+                  <Pane layoutX="620.0" layoutY="447.0" prefHeight="315.0" prefWidth="270.0" styleClass="card">
+                     <children>
+                        <Button layoutX="35.0" layoutY="58.0" mnemonicParsing="false" onAction="#addCategoryClicked" prefHeight="50.0" prefWidth="200.0" styleClass="add" text="Add Category" />
+                        <Button layoutX="35.0" layoutY="142.0" mnemonicParsing="false" onAction="#deleteCategoryClicked" prefHeight="50.0" prefWidth="200.0" styleClass="delete" text="Delete" />
+                        <Button layoutX="102.0" layoutY="222.0" mnemonicParsing="false" style="-fx-background-color: null;">
+                           <graphic>
+                              <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/refresh.png" />
+                                 </image></ImageView>
+                           </graphic>
+                        </Button>
+                     </children></Pane>
+                  <Pane layoutX="916.0" layoutY="447.0" prefHeight="315.0" prefWidth="270.0" styleClass="card">
+                     <children>
+                        <VBox alignment="TOP_CENTER" layoutX="1.0" layoutY="14.0" prefHeight="291.0" prefWidth="269.0" spacing="30.0">
+                           <children>
+                              <Label text="Best Selling Category">
+                                 <font>
+                                    <Font name="Verdana" size="20.0" />
+                                 </font>
+                              </Label>
+                              <ImageView fitHeight="120.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@images/trophy.png" />
+                                 </image>
+                              </ImageView>
+                              <Label fx:id="bestCategoryLabel" alignment="CENTER" contentDisplay="CENTER" prefHeight="30.0" prefWidth="270.0" text="Food">
+                                 <font>
+                                    <Font name="Verdana Bold" size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </VBox>
+                     </children></Pane>
+               </children></Pane>
          </children>
       </AnchorPane>
    </center>

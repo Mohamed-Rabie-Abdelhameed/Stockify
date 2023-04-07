@@ -1,7 +1,5 @@
 package com.stockify.stockify;
-import com.stockify.stockify.models.Order;
-import com.stockify.stockify.models.Processes;
-import com.stockify.stockify.models.Product;
+import com.stockify.stockify.models.*;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -11,6 +9,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.chart.BarChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -57,7 +56,8 @@ public class DashboardController implements Initializable {
     @FXML
     private TableView productsTable;
 
-
+    @FXML
+    private TableView suppliersTable;
     @FXML
     private TableView ordersTable;
     @FXML
@@ -97,6 +97,43 @@ public class DashboardController implements Initializable {
     @FXML
     private TableColumn<Order, Integer> orderQuantityColumn = new TableColumn<>("Quantity");
 
+    @FXML
+    private TableColumn<Supplier, Integer> supplierIdColumn = new TableColumn<>("ID");
+
+    @FXML
+    private TableColumn<Supplier, String> supplierNameColumn = new TableColumn<>("Name");
+
+    @FXML
+    private TableColumn<Supplier, String> supplierAddressColumn = new TableColumn<>("Address");
+
+    @FXML
+    private TableColumn<Supplier, String> supplierPhoneColumn = new TableColumn<>("Phone");
+
+    @FXML
+    private TableColumn<Supplier, String> supplierEmailColumn = new TableColumn<>("Email");
+
+    @FXML
+    private TableView categoriesTable;
+
+    @FXML
+    private TableColumn<Category, Integer> categoryIdColumn = new TableColumn<>("ID");
+
+    @FXML
+    private TableColumn<Category, String> categoryNameColumn = new TableColumn<>("Name");
+
+    @FXML
+    private TableView lowInStockTable;
+    @FXML
+    private TableColumn<Category, Integer> lowCategoryNameColumn = new TableColumn<>("Quantity");
+
+    @FXML
+    private TableColumn<Category, Integer> lowCategoryQuantityColumn = new TableColumn<>("Category");
+
+    @FXML
+    private Label bestCategoryLabel;
+
+    @FXML
+    BarChart<String, Integer> categoriesChart;
     @FXML
     private Pane categoriesPane;
 
@@ -416,6 +453,154 @@ public class DashboardController implements Initializable {
         setLabels();
     }
 
+    private void setSuppliersTable(){
+        supplierIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        supplierNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        supplierNameColumn.setOnEditCommit((TableColumn.CellEditEvent<Supplier, String> event) -> {
+            Supplier supplier = event.getRowValue();
+            String newValue = event.getNewValue();
+            if (newValue == null || newValue.trim().isEmpty()) {
+                Snackbar.show("Name cannot be empty!", false);
+                return;
+            }
+            supplier.setName(event.getNewValue());
+            boolean isDone = Processes.updateSupplier(supplier);
+            if(isDone){
+                Snackbar.show("Name updated successfully!", true);
+            } else {
+                Snackbar.show("Name update failed!", false);
+            }
+        });
+        supplierAddressColumn.setCellValueFactory(new PropertyValueFactory<>("address"));
+        supplierAddressColumn.setOnEditCommit((TableColumn.CellEditEvent<Supplier, String> event) -> {
+            Supplier supplier = event.getRowValue();
+            String newValue = event.getNewValue();
+            if (newValue == null || newValue.trim().isEmpty()) {
+                Snackbar.show("Address cannot be empty!", false);
+                return;
+            }
+            supplier.setAddress(event.getNewValue());
+            boolean isDone = Processes.updateSupplier(supplier);
+            if(isDone){
+                Snackbar.show("Address updated successfully!", true);
+            } else {
+                Snackbar.show("Address update failed!", false);
+            }
+        });
+        supplierPhoneColumn.setCellValueFactory(new PropertyValueFactory<>("phone"));
+        supplierPhoneColumn.setOnEditCommit((TableColumn.CellEditEvent<Supplier, String> event) -> {
+            Supplier supplier = event.getRowValue();
+            String newValue = event.getNewValue();
+            if (newValue == null || newValue.trim().isEmpty()) {
+                Snackbar.show("Phone cannot be empty!", false);
+                return;
+            }
+            supplier.setPhone(event.getNewValue());
+            boolean isDone = Processes.updateSupplier(supplier);
+            if(isDone){
+                Snackbar.show("Phone updated successfully!", true);
+            } else {
+                Snackbar.show("Phone update failed!", false);
+            }
+        });
+        supplierEmailColumn.setCellValueFactory(new PropertyValueFactory<>("email"));
+        supplierEmailColumn.setOnEditCommit((TableColumn.CellEditEvent<Supplier, String> event) -> {
+            Supplier supplier = event.getRowValue();
+            String newValue = event.getNewValue();
+            if (newValue == null || newValue.trim().isEmpty()) {
+                Snackbar.show("Email cannot be empty!", false);
+                return;
+            }
+            supplier.setEmail(event.getNewValue());
+            boolean isDone = Processes.updateSupplier(supplier);
+            if(isDone){
+                Snackbar.show("Email updated successfully!", true);
+            } else {
+                Snackbar.show("Email update failed!", false);
+            }
+        });
+        Supplier[] suppliers = Processes.getAllSuppliers();
+        ObservableList<Supplier> data = FXCollections.observableArrayList(suppliers);
+        suppliersTable.setItems(data);
+    }
+
+    @FXML
+    void addSupplierClicked() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("add-supplier-view.fxml"));
+        Stage stage = new Stage();
+        stage.setTitle("Stockify");
+        stage.setScene(new Scene(root, 570, 370));
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Login.class.getResourceAsStream("images/logo.png")));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+        refreshSuppliersTable();
+        setLabels();
+    }
+
+    @FXML
+    void deleteSupplierClicked(){
+        Supplier supplier = (Supplier) suppliersTable.getSelectionModel().getSelectedItem();
+        if(supplier == null){
+            Snackbar.show("Please select a supplier to delete!", false);
+            return;
+        }
+        boolean isDone = Processes.deleteSupplier(supplier);
+        if(isDone){
+            Snackbar.show("Supplier deleted successfully!", true);
+            setLabels();
+        } else {
+            Snackbar.show("Supplier deletion failed!", false);
+        }
+        setSuppliersTable();
+        setLabels();
+    }
+
+    @FXML
+    void refreshSuppliersTable(){
+        ObservableList<Supplier> suppliers = FXCollections.observableArrayList();
+        suppliers.addAll(Processes.getAllSuppliers());
+        suppliersTable.setItems(suppliers);
+        setLabels();
+    }
+
+    void setCategoriesTable(){
+        categoryIdColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
+        categoryNameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        categoryNameColumn.setOnEditCommit((TableColumn.CellEditEvent<Category, String> event) -> {
+            Category category = event.getRowValue();
+            String newValue = event.getNewValue();
+            if (newValue == null || newValue.trim().isEmpty()) {
+                Snackbar.show("Name cannot be empty!", false);
+                return;
+            }
+            category.setName(event.getNewValue());
+            boolean isDone = Processes.updateCategory(category);
+            if(isDone){
+                Snackbar.show("Name updated successfully!", true);
+            } else {
+                Snackbar.show("Name update failed!", false);
+            }
+        });
+        Category[] categories = Processes.getAllCategories();
+        ObservableList<Category> data = FXCollections.observableArrayList(categories);
+        categoriesTable.setItems(data);
+    }
+
+    @FXML
+    void addCategoryClicked() throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("add-category-view.fxml"));
+        Stage stage = new Stage();
+        stage.setTitle("Stockify");
+        stage.setScene(new Scene(root, 570, 370));
+        stage.setResizable(false);
+        stage.getIcons().add(new Image(Login.class.getResourceAsStream("images/logo.png")));
+        stage.initModality(Modality.APPLICATION_MODAL);
+        stage.showAndWait();
+        refreshSuppliersTable();
+        setLabels();
+    }
+
     private void setLabels(){
         inStockLabel.setText(String.valueOf(Processes.getInStock()));
         toBeRecievedLabel.setText(String.valueOf(Processes.getToBeReceived()));
@@ -436,6 +621,8 @@ public class DashboardController implements Initializable {
         lastClickedButton = (Button) nav.getChildren().get(1);
         setProductsTable();
         setOrdersTable();
+        setSuppliersTable();
+        setCategoriesTable();
         setLabels();
     }
 }

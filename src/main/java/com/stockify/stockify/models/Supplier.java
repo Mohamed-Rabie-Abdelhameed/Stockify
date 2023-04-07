@@ -1,26 +1,26 @@
 package com.stockify.stockify.models;
 
 public class Supplier {
-    private int supplierId;
+    private int id;
     private String name;
     private String address;
     private String phone;
     private String email;
 
     public Supplier(int supplierId, String name, String address, String phone, String email) {
-        this.supplierId = supplierId;
+        this.id = supplierId;
         this.name = name;
         this.address = address;
         this.phone = phone;
         this.email = email;
     }
 
-    public int getSupplierId() {
-        return supplierId;
+    public int getId() {
+        return id;
     }
 
-    public void setSupplierId(int supplierId) {
-        this.supplierId = supplierId;
+    public void setId(int supplierId) {
+        this.id = supplierId;
     }
 
     public String getName() {
