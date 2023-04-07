@@ -3,6 +3,7 @@ package com.stockify.stockify.models;
 import com.stockify.stockify.Snackbar;
 
 import java.sql.*;
+import java.util.Arrays;
 
 public class Processes {
     static Connection conn = DB.connectDB();
@@ -316,7 +317,7 @@ public class Processes {
     }
 
     public static boolean updateCategory(Category category) {
-        String query = "UPDATE categories SET name = ? WHERE category_id = ?";
+        String query = "UPDATE categories SET category_name = ? WHERE category_id = ?";
         try {
             PreparedStatement pst = conn.prepareStatement(query);
             pst.setString(1, category.getName());
@@ -341,22 +342,96 @@ public class Processes {
             rs = pst.executeQuery();
             int i = 0;
             while (rs.next()) {
-                categories[i] = new Category(rs.getInt("category_id"), rs.getString("name"));
+                categories[i] = new Category(rs.getInt("category_id"), rs.getString("category_name"));
                 i++;
             }
             return categories;
 
         } catch (SQLException e) {
+            e.printStackTrace();
             throw new RuntimeException(e);
         }
     }
 
     public static void addCategory(Category newCategory) {
-        String query = "INSERT INTO categories (name) VALUES (?)";
+        String query = "INSERT INTO categories (category_name) VALUES (?)";
         try {
             PreparedStatement pst = conn.prepareStatement(query);
             pst.setString(1, newCategory.getName());
             pst.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static boolean deleteCategory(Category category) {
+        String query = "DELETE FROM categories WHERE category_id = ?";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            pst.setInt(1, category.getId());
+            int res = pst.executeUpdate();
+            return res > 0;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String getBestCategory() {
+        String query = "SELECT category_name, COUNT(*) AS count FROM categories, products WHERE categories.category_id = products.category_id GROUP BY category_name ORDER BY count DESC LIMIT 1";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            if (rs.next()) {
+                return rs.getString("category_name");
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public static String[] getLowInStockCategories() {
+        String query = "SELECT category_name FROM categories, products WHERE categories.category_id = products.category_id AND quantity_in_stock < 10 GROUP BY category_name";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            int count = 0;
+            while (rs.next()) {
+                count++;
+            }
+            String[] categories = new String[count];
+            rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                categories[i] = rs.getString("category_name");
+                i++;
+            }
+            return categories;
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+//    get the quantity of each of categories
+    public static ChartArrays getQuantityOfEachCategory() {
+        String query = "SELECT category_name, COUNT(*) AS count FROM categories, products WHERE categories.category_id = products.category_id GROUP BY category_name";
+        try {
+            PreparedStatement pst = conn.prepareStatement(query);
+            ResultSet rs = pst.executeQuery();
+            int count = 0;
+            while (rs.next()) {
+                count++;
+            }
+            String[] categories = new String[count];
+            int[] quantity = new int[count];
+            rs = pst.executeQuery();
+            int i = 0;
+            while (rs.next()) {
+                categories[i] = rs.getString("category_name");
+                quantity[i] = rs.getInt("count");
+                i++;
+            }
+            return new ChartArrays(categories, quantity);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }

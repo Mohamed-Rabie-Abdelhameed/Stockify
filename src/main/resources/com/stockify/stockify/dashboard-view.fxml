@@ -24,7 +24,7 @@
    <center>
       <AnchorPane fx:id="dash" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" style="-fx-background-color: #f0f1f3;" BorderPane.alignment="CENTER">
          <children>
-            <Pane fx:id="inventoryPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Pane fx:id="inventoryPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <HBox layoutX="22.0" layoutY="22.0" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="185.0" prefWidth="1156.0" spacing="55.0">
                      <children>
@@ -376,19 +376,19 @@
                      </children>
                   </Pane>
                </children></Pane>
-            <Pane fx:id="categoriesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <Pane fx:id="categoriesPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" prefHeight="650.4" prefWidth="1200.0" style="-fx-background-color: f0f1f3;" visible="false" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
                <children>
                   <BarChart fx:id="categoriesChart" layoutX="14.0" layoutY="14.0" prefHeight="400.0" prefWidth="580.0" styleClass="card" title="Categories">
                     <xAxis>
-                      <CategoryAxis label="Category" side="BOTTOM" />
+                      <CategoryAxis label="Category" side="BOTTOM" fx:id="xAxis" />
                     </xAxis>
                     <yAxis>
-                      <NumberAxis label="Count" side="LEFT" />
+                      <NumberAxis fx:id="yAxis" label="Count" side="LEFT" />
                     </yAxis>
                   </BarChart>
                   <Pane layoutX="621.0" layoutY="14.0" prefHeight="400.0" prefWidth="565.0" styleClass="card">
                      <children>
-                        <Label layoutX="14.0" layoutY="14.0" text="Low in Stock" textFill="#f36960">
+                        <Label layoutX="14.0" layoutY="14.0" text="Low in Stock">
                            <font>
                               <Font name="Verdana" size="24.0" />
                            </font>
@@ -396,12 +396,20 @@
                               <Insets top="10.0" />
                            </padding>
                         </Label>
-                        <TableView fx:id="lowInStockTable" layoutX="12.0" layoutY="76.0" prefHeight="300.0" prefWidth="540.0">
-                          <columns>
-                            <TableColumn fx:id="lowCategoryNameColumn" prefWidth="270.0" text="Category" />
-                            <TableColumn fx:id="lowCategoryQuantityColumn" prefWidth="270.0" text="Quantity" />
-                          </columns>
-                        </TableView>
+                        <ScrollPane layoutX="12.0" layoutY="76.0">
+                           <content>
+                              <TableView fx:id="lowInStockTable" prefHeight="300.0" prefWidth="540.0">
+                                <columns>
+                                  <TableColumn fx:id="lowCategoryNameColumn" prefWidth="539.1998901367188" text="Category" />
+                                </columns>
+                              </TableView>
+                           </content>
+                        </ScrollPane>
+                        <ImageView fitHeight="30.0" fitWidth="30.0" layoutX="176.0" layoutY="24.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@images/decrease.png" />
+                           </image>
+                        </ImageView>
                      </children></Pane>
                   <ScrollPane layoutX="14.0" layoutY="446.0">
                      <content>
@@ -415,15 +423,24 @@
                   </ScrollPane>
                   <Pane layoutX="620.0" layoutY="447.0" prefHeight="315.0" prefWidth="270.0" styleClass="card">
                      <children>
-                        <Button layoutX="35.0" layoutY="58.0" mnemonicParsing="false" onAction="#addCategoryClicked" prefHeight="50.0" prefWidth="200.0" styleClass="add" text="Add Category" />
-                        <Button layoutX="35.0" layoutY="142.0" mnemonicParsing="false" onAction="#deleteCategoryClicked" prefHeight="50.0" prefWidth="200.0" styleClass="delete" text="Delete" />
-                        <Button layoutX="102.0" layoutY="222.0" mnemonicParsing="false" style="-fx-background-color: null;">
+                        <Button layoutX="35.0" layoutY="58.0" mnemonicParsing="false" onAction="#addCategoryClicked" prefHeight="50.0" prefWidth="200.0" styleClass="add" text="Add Category">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></Button>
+                        <Button layoutX="35.0" layoutY="142.0" mnemonicParsing="false" onAction="#deleteCategoryClicked" prefHeight="50.0" prefWidth="200.0" styleClass="delete" text="Delete">
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor></Button>
+                        <Button layoutX="102.0" layoutY="222.0" mnemonicParsing="false" onAction="#refreshCategoriesTable" style="-fx-background-color: null;">
                            <graphic>
                               <ImageView fitHeight="50.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@images/refresh.png" />
                                  </image></ImageView>
                            </graphic>
+                           <cursor>
+                              <Cursor fx:constant="HAND" />
+                           </cursor>
                         </Button>
                      </children></Pane>
                   <Pane layoutX="916.0" layoutY="447.0" prefHeight="315.0" prefWidth="270.0" styleClass="card">

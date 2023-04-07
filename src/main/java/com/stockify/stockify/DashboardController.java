@@ -1,5 +1,6 @@
 package com.stockify.stockify;
 import com.stockify.stockify.models.*;
+import javafx.beans.property.ReadOnlyStringWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,6 +11,9 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.chart.BarChart;
+import javafx.scene.chart.CategoryAxis;
+import javafx.scene.chart.NumberAxis;
+import javafx.scene.chart.XYChart;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TableColumn;
@@ -124,16 +128,17 @@ public class DashboardController implements Initializable {
     @FXML
     private TableView lowInStockTable;
     @FXML
-    private TableColumn<Category, Integer> lowCategoryNameColumn = new TableColumn<>("Quantity");
-
-    @FXML
-    private TableColumn<Category, Integer> lowCategoryQuantityColumn = new TableColumn<>("Category");
+    private TableColumn<String, String> lowCategoryNameColumn = new TableColumn<>("Category");
 
     @FXML
     private Label bestCategoryLabel;
-
     @FXML
-    BarChart<String, Integer> categoriesChart;
+    CategoryAxis xAxis = new CategoryAxis();
+    @FXML
+    NumberAxis yAxis = new NumberAxis();
+    @FXML
+    BarChart<String, Number> categoriesChart;
+    XYChart.Series<String, Number> series = new XYChart.Series<>();
     @FXML
     private Pane categoriesPane;
 
@@ -423,8 +428,7 @@ public class DashboardController implements Initializable {
         stage.getIcons().add(new Image(Login.class.getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
-        refreshOrdersTable();
-        setLabels();
+        refreshTables();
     }
 
     @FXML
@@ -441,8 +445,7 @@ public class DashboardController implements Initializable {
         } else {
             Snackbar.show("Order deletion failed!", false);
         }
-        setOrdersTable();
-        setLabels();
+        refreshTables();
     }
 
     @FXML
@@ -534,8 +537,7 @@ public class DashboardController implements Initializable {
         stage.getIcons().add(new Image(Login.class.getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
-        refreshSuppliersTable();
-        setLabels();
+        refreshTables();
     }
 
     @FXML
@@ -552,8 +554,7 @@ public class DashboardController implements Initializable {
         } else {
             Snackbar.show("Supplier deletion failed!", false);
         }
-        setSuppliersTable();
-        setLabels();
+        refreshTables();
     }
 
     @FXML
@@ -592,13 +593,58 @@ public class DashboardController implements Initializable {
         Parent root = FXMLLoader.load(getClass().getResource("add-category-view.fxml"));
         Stage stage = new Stage();
         stage.setTitle("Stockify");
-        stage.setScene(new Scene(root, 570, 370));
+        stage.setScene(new Scene(root, 570, 250));
         stage.setResizable(false);
         stage.getIcons().add(new Image(Login.class.getResourceAsStream("images/logo.png")));
         stage.initModality(Modality.APPLICATION_MODAL);
         stage.showAndWait();
-        refreshSuppliersTable();
+        refreshTables();
+    }
+
+    @FXML
+    void deleteCategoryClicked(){
+        Category category = (Category) categoriesTable.getSelectionModel().getSelectedItem();
+        if(category == null){
+            Snackbar.show("Please select a category to delete!", false);
+            return;
+        }
+        boolean isDone = Processes.deleteCategory(category);
+        if(isDone){
+            Snackbar.show("Category deleted successfully!", true);
+        } else {
+            Snackbar.show("Category deletion failed!", false);
+        }
+        refreshTables();
+    }
+
+    @FXML
+    void refreshCategoriesTable(){
+        ObservableList<Category> categories = FXCollections.observableArrayList();
+        categories.addAll(Processes.getAllCategories());
+        categoriesTable.setItems(categories);
         setLabels();
+        setLowInStockTable();
+        setBarChart();
+    }
+
+    void setLowInStockTable(){
+        lowCategoryNameColumn.setCellValueFactory(cellData -> new ReadOnlyStringWrapper(cellData.getValue()));
+        String[] lowInStock = Processes.getLowInStockCategories();
+        ObservableList<String> data = FXCollections.observableArrayList(lowInStock);
+        lowInStockTable.setItems(data);
+    }
+
+
+    void setBarChart(){
+        ChartArrays chartArrays = Processes.getQuantityOfEachCategory();
+        String[] categories = chartArrays.getCategories();
+        int[] quantities = chartArrays.getCount();
+        categoriesChart.getData().clear();
+        for(int i = 0; i < categories.length; i++){
+            series.getData().add(new XYChart.Data<>(categories[i], quantities[i]));
+        }
+        categoriesChart.getData().add(series);
+
     }
 
     private void setLabels(){
@@ -611,18 +657,23 @@ public class DashboardController implements Initializable {
         NOOnTheWayLabel.setText(String.valueOf(Processes.getNumberOfOrdersByStatus("Shipped")));
         NOReturnedLabel.setText(String.valueOf(Processes.getNumberOfOrdersByStatus("Returned")));
         totalCostLabel.setText(String.valueOf(Processes.getTotalCost()));
+        bestCategoryLabel.setText(Processes.getBestCategory());
     }
 
-
+    private void refreshTables(){
+        setProductsTable();
+        setOrdersTable();
+        setSuppliersTable();
+        setCategoriesTable();
+        setLowInStockTable();
+        setBarChart();
+        setLabels();
+    }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setCurrentButton((Button) nav.getChildren().get(1));
         lastClickedButton = (Button) nav.getChildren().get(1);
-        setProductsTable();
-        setOrdersTable();
-        setSuppliersTable();
-        setCategoriesTable();
-        setLabels();
+        refreshTables();
     }
 }
