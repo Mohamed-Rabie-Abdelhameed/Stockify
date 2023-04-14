@@ -46,10 +46,19 @@ public class AddOrderController {
                 Order newOrder = new Order(0, order_Date,delivery_Date,status.getText(),Integer.parseInt(productId.getText()), Integer.parseInt(quantity.getText()));
                 Processes.addOrder(newOrder);
                 Snackbar.show("Order added successfully", true);
+                resetFields();
             } catch (Exception e) {
                 e.printStackTrace();
                 Snackbar.show("An error occurred", false);
             }
         }
+    }
+
+    void resetFields() {
+        productId.setText("");
+        quantity.setText("");
+        status.setText("");
+        orderDate.setText("");
+        deliveryDate.setText("");
     }
 }

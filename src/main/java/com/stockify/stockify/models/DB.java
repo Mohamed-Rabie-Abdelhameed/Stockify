@@ -1,5 +1,7 @@
 package com.stockify.stockify.models;
 
+
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 
@@ -12,6 +14,7 @@ public class DB {
         }
         catch(Exception e){
             e.printStackTrace();
+
             return null;
         }
     }

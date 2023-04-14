@@ -8,6 +8,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
@@ -25,8 +26,23 @@ public class LoginController {
     private TextField password;
 
     @FXML
+    private Label errorLabel;
+
+    @FXML
     void login(ActionEvent event) throws SQLException {
-        System.out.printf("Email: %s", email.getText());
+        String email = this.email.getText();
+        String password = this.password.getText();
+        if (email.isEmpty() || password.isEmpty()) {
+            errorLabel.setText("Please fill in all fields");
+            return;
+        } else if (email.equals("admin") && password.equals("admin")) {
+            openDashboard(event);
+        } else {
+            errorLabel.setText("Invalid credentials");
+        }
+
+    }
+    private void openDashboard(ActionEvent event) {
         try {
             Parent root = FXMLLoader.load(getClass().getResource("dashboard-view.fxml"));
             Stage stage = new Stage();
@@ -39,9 +55,7 @@ public class LoginController {
         }
         catch (IOException e) {
             e.printStackTrace();
+            errorLabel.setText("Error connecting to database");
         }
-
-
     }
-
 }

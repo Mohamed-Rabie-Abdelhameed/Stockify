@@ -28,6 +28,7 @@ public class AddCategoryController {
                 Category newCategory = new Category(0, name.getText());
                 Processes.addCategory(newCategory);
                 Snackbar.show("Category added successfully", true);
+                resetFields();
             } catch (Exception e) {
                 e.printStackTrace();
                 Snackbar.show("An error occurred", false);
@@ -35,4 +36,7 @@ public class AddCategoryController {
         }
     }
 
+    void resetFields() {
+        name.setText("");
+    }
 }

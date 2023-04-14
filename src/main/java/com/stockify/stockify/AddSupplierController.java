@@ -40,12 +40,21 @@ public class AddSupplierController {
                 Supplier newSupplier = new Supplier(0, name.getText(), address.getText(), phone.getText(), email.getText());
                 Processes.addSupplier(newSupplier);
                 Snackbar.show("Supplier added successfully", true);
+                resetFields();
+
             } catch (Exception e) {
                 e.printStackTrace();
                 Snackbar.show("An error occurred", false);
             }
         }
 
+    }
+
+    void resetFields() {
+        name.setText("");
+        address.setText("");
+        phone.setText("");
+        email.setText("");
     }
 
 }

@@ -39,12 +39,21 @@ public class AddProductController {
                 Product newProduct = new Product(0, name.getText(), Integer.parseInt(categoryId.getText()), Integer.parseInt(supplierId.getText()), Double.parseDouble(price.getText()), Integer.parseInt(quantity.getText()));
                 Processes.addProduct(newProduct);
                 Snackbar.show("Product added successfully", true);
+                resetFields();
             } catch (Exception e) {
                 e.printStackTrace();
                 Snackbar.show("An error occurred", false);
             }
         }
 
+    }
+
+    void resetFields() {
+        name.setText("");
+        categoryId.setText("");
+        supplierId.setText("");
+        price.setText("");
+        quantity.setText("");
     }
 
 }
