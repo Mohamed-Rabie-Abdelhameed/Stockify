@@ -9,8 +9,9 @@ To use Stockify, you need to have Java and MySQL installed on your machine. You 
 1. Clone the repo: `git clone https://github.com/Mohamed-Rabie-Abdelhameed/Stockify.git`
 2. Open the project in your preferred Java IDE.
 3. Add the JavaFX library to your project.
-4. Import the database schema located in the `database` folder to your local MySQL server.
-5. Update the database connection properties in the `DatabaseUtil.java` file to match your local MySQL server settings.
+4. Import the database schema located in the `DB` folder to your local MySQL server.
+5. Update the database connection properties in the `DB.java` file to match your local MySQL server settings.
+6- Install the application on your machine using the `setup.exe` file in the the `setup` folder.
 
 ## Usage
 
