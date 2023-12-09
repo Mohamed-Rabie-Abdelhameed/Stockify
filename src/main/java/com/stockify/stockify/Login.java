@@ -7,6 +7,7 @@ import javafx.scene.image.Image;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class Login extends Application {
     @Override
@@ -16,7 +17,7 @@ public class Login extends Application {
         stage.setTitle("Stockify");
         stage.setScene(scene);
         stage.setResizable(false);
-        stage.getIcons().add(new Image(Login.class.getResourceAsStream("images/logo.png")));
+        stage.getIcons().add(new Image(Objects.requireNonNull(Login.class.getResourceAsStream("images/logo.png"))));
         stage.show();
     }
 
